@@ -1,30 +1,16 @@
+'use client'
+
+import React from 'react'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { getSurahById } from '@/lib/quran'
+import { Surah } from '@/lib/quran'
 import { useQuran } from '@/store/QuranContext'
 
-interface PageProps {
-  params: Promise<{ id: string }>
+interface SurahDetailViewProps {
+  surah: Surah
 }
 
-/**
- * Statically generate routes for all 114 Surahs at build time.
- */
-export async function generateStaticParams() {
-  return Array.from({ length: 114 }, (_, i) => ({
-    id: (i + 1).toString(),
-  }))
-}
-
-export default async function SurahPage({ params }: PageProps) {
-  const { id } = await params
-  const surahId = parseInt(id)
-  
-  if (isNaN(surahId)) notFound()
-  
-  const surah = getSurahById(surahId)
-  
-  if (!surah) notFound()
+export default function SurahDetailView({ surah }: SurahDetailViewProps) {
+  const { toggleBookmark, isBookmarked } = useQuran()
 
   return (
     <div className="flex-1 flex flex-col items-center bg-[#FCFBF8]">
@@ -91,8 +77,21 @@ export default async function SurahPage({ params }: PageProps) {
                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                    Play
                 </button>
-                <button className="h-10 w-10 bg-emerald-50 hover:bg-emerald-100 rounded-xl text-primary flex items-center justify-center transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                <button 
+                  onClick={() => toggleBookmark({
+                    id: verse.id,
+                    surahId: surah.id,
+                    surahName: surah.transliteration,
+                    translation: verse.translation
+                  })}
+                  className={`h-10 w-10 flex items-center justify-center rounded-xl transition-all duration-300 ${
+                    isBookmarked(surah.id, verse.id)
+                    ? 'bg-accent text-white shadow-lg shadow-accent/20 scale-110'
+                    : 'bg-emerald-50 hover:bg-emerald-100 text-primary'
+                  }`}
+                  title={isBookmarked(surah.id, verse.id) ? 'Remove Bookmark' : 'Add Bookmark'}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill={isBookmarked(surah.id, verse.id) ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
                 </button>
               </div>
             </div>

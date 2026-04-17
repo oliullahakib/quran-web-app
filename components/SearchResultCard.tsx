@@ -39,7 +39,10 @@ export default function SearchResultCard({ result, query }: SearchResultCardProp
       
       <div className="relative pl-4">
         <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-emerald-100 group-hover:bg-accent transition-colors rounded-full"></div>
-        <p className="text-slate-600 leading-relaxed text-sm md:text-base font-light">
+        <p 
+          className="text-slate-600 leading-relaxed font-light"
+          style={{ fontSize: 'calc(var(--translation-font-size) * 0.9)' }}
+        >
           <TextHighlighter text={result.translation} highlight={query} />
         </p>
       </div>
