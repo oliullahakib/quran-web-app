@@ -1,6 +1,9 @@
 import Link from 'next/link'
+import { getAllSurahs } from '@/lib/quran'
 
 export default function Home() {
+  const surahs = getAllSurahs()
+
   return (
     <div className="flex-1 flex flex-col items-center">
       {/* Hero Section */}
@@ -22,27 +25,23 @@ export default function Home() {
             Start Reading
           </Link>
           <button className="px-8 py-3 border border-secondary/30 rounded-full font-medium hover:bg-secondary/10 transition-colors">
-            Learn More
+            View Bookmark
           </button>
         </div>
       </section>
 
-      {/* Featured Section */}
+      {/* Surah List Section */}
       <section className="w-full max-w-6xl py-20 px-4">
         <div className="flex justify-between items-end mb-12">
           <div>
-            <h2 className="text-3xl font-bold text-primary mb-2">Featured Surahs</h2>
+            <h2 className="text-3xl font-bold text-primary mb-2">Surah List</h2>
             <div className="w-20 h-1 bg-accent"></div>
           </div>
-          <button className="text-accent font-medium hover:underline">View All Surahs</button>
+          <p className="text-slate-500 font-medium">114 Chapters</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[
-            { id: 1, name: 'Al-Fatihah', arabic: 'الفاتحة', meaning: 'The Opening' },
-            { id: 18, name: 'Al-Kahf', arabic: 'الكهف', meaning: 'The Cave' },
-            { id: 36, name: 'Ya-Sin', arabic: 'يس', meaning: 'Ya Sin' },
-          ].map((surah) => (
+          {surahs.map((surah) => (
             <Link 
               key={surah.id}
               href={`/surah/${surah.id}`}
@@ -53,11 +52,13 @@ export default function Home() {
                   #{surah.id}
                 </span>
                 <span className="font-arabic text-2xl text-primary group-hover:text-accent transition-colors">
-                  {surah.arabic}
+                  {surah.name}
                 </span>
               </div>
-              <h3 className="text-xl font-bold text-slate-800">{surah.name}</h3>
-              <p className="text-slate-500 text-sm">{surah.meaning}</p>
+              <h3 className="text-xl font-bold text-slate-800">{surah.transliteration}</h3>
+              <p className="text-slate-500 text-sm overflow-hidden text-ellipsis whitespace-nowrap">
+                {surah.translation} • {surah.total_verses} Verses
+              </p>
             </Link>
           ))}
         </div>
