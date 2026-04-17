@@ -2,10 +2,11 @@
 
 import Link from 'next/link'
 import { useQuran } from '@/store/QuranContext'
+import { useSettings } from '@/store/SettingsContext'
 import SettingsSidebar from './SettingsSidebar'
 
 export default function Navbar() {
-  const { setIsSettingsOpen } = useQuran()
+  const { setIsSettingsOpen } = useSettings()
 
   return (
     <nav className="h-20 w-full border-b border-emerald-50 bg-white/80 backdrop-blur-md sticky top-0 z-50 flex items-center justify-between px-6 md:px-12">

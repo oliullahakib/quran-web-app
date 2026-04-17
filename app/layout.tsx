@@ -27,6 +27,7 @@ export const metadata: Metadata = {
 
 import Navbar from '@/components/Navbar'
 import { QuranProvider } from '@/store/QuranContext'
+import { SettingsProvider } from '@/store/SettingsContext'
 
 export default function RootLayout({
   children,
@@ -36,10 +37,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${amiri.variable} ${scheherazade.variable}`}>
       <body className="font-sans antialiased text-foreground bg-background transition-colors duration-300">
-        <QuranProvider>
-          <Navbar />
-          <main className="min-h-[calc(100vh-5rem)] flex flex-col">{children}</main>
-        </QuranProvider>
+        <SettingsProvider>
+          <QuranProvider>
+            <Navbar />
+            <main className="min-h-[calc(100vh-5rem)] flex flex-col">{children}</main>
+          </QuranProvider>
+        </SettingsProvider>
       </body>
     </html>
   )

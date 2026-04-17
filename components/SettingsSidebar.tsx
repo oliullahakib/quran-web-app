@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { useQuran } from '@/store/QuranContext'
+import { useSettings } from '@/store/SettingsContext'
 
 export default function SettingsSidebar() {
   const { 
@@ -12,21 +12,22 @@ export default function SettingsSidebar() {
     translationFontSize, 
     setTranslationFontSize, 
     arabicFontFamily, 
-    setArabicFontFamily 
-  } = useQuran()
+    setArabicFontFamily,
+    resetSettings
+  } = useSettings()
 
   if (!isSettingsOpen) return null
 
   return (
-    <div className="fixed inset-0 z-100 flex justify-end overflow-hidden">
+    <div className="fixed min-h-screen inset-0 z-100 flex justify-end overflow-hidden">
       {/* Overlay */}
       <div 
-        className="absolute inset-0 bg-emerald-950/20 backdrop-blur-sm transition-opacity animate-in fade-in"
+        className="absolute inset-0 bg-emerald-950/20 backdrop-blur-sm transition-opacity animate-sidebar-fade"
         onClick={() => setIsSettingsOpen(false)}
       />
       
       {/* Sidebar Panel */}
-      <div className="relative w-full max-w-sm bg-white shadow-2xl animate-in slide-in-from-right duration-500 overflow-y-auto">
+      <div className="relative w-full max-w-sm bg-white shadow-2xl animate-sidebar-slide overflow-y-auto">
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-emerald-50">
@@ -101,14 +102,9 @@ export default function SettingsSidebar() {
             </div>
           </div>
 
-          {/* Footer Actions */}
           <div className="mt-auto p-6 bg-emerald-50/30 border-t border-emerald-50">
             <button 
-              onClick={() => {
-                setArabicFontSize(36)
-                setTranslationFontSize(18)
-                setArabicFontFamily('amiri')
-              }}
+              onClick={resetSettings}
               className="w-full py-4 rounded-2xl bg-white border border-emerald-100 text-sm font-bold text-primary hover:border-accent hover:text-accent transition-all duration-300"
             >
               Reset to Defaults
