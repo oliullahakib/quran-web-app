@@ -2,12 +2,14 @@
 
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react'
 import { getAllSurahs, searchAyahs, Surah, SearchResult } from '@/lib/quran'
+import useDebounce from '@/hooks/useDebounce'
 
 interface QuranContextType {
   surahs: Omit<Surah, 'verses'>[]
   searchResults: SearchResult[]
   searchQuery: string
   setSearchQuery: (query: string) => void
+  debouncedQuery: string
   isLoading: boolean
 }
 
@@ -18,6 +20,8 @@ export function QuranProvider({ children }: { children: React.ReactNode }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [isLoading, setIsLoading] = useState(true)
 
+  const debouncedQuery = useDebounce(searchQuery, 400)
+
   useEffect(() => {
     // Initialize surah list
     const data = getAllSurahs()
@@ -26,14 +30,15 @@ export function QuranProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const searchResults = useMemo(() => {
-    return searchAyahs(searchQuery)
-  }, [searchQuery])
+    return searchAyahs(debouncedQuery)
+  }, [debouncedQuery])
 
   const value = {
     surahs,
     searchResults,
     searchQuery,
     setSearchQuery,
+    debouncedQuery,
     isLoading,
   }
 
