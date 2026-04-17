@@ -46,11 +46,8 @@ export default function SurahDetailView({ surah }: SurahDetailViewProps) {
           <div className="text-center py-12 mb-6 relative">
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-emerald-50 rounded-full blur-3xl opacity-50 -z-10"></div>
             <p 
-              className="text-primary drop-shadow-sm"
-              style={{ 
-                fontSize: 'calc(var(--arabic-font-size) * 0.8)', 
-                fontFamily: 'var(--font-arabic-family)' 
-              }}
+              className="font-arabic-dynamic text-primary drop-shadow-sm leading-relaxed"
+              style={{ fontSize: 'calc(var(--arabic-font-size) * 0.8)' }}
             >
               بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
             </p>
@@ -97,11 +94,8 @@ export default function SurahDetailView({ surah }: SurahDetailViewProps) {
             </div>
             
             <p 
-              className="text-right leading-[2.2] md:leading-[2.5] mb-12 text-slate-800 transition-colors duration-500 group-hover:text-primary relative z-10"
-              style={{ 
-                fontSize: 'var(--arabic-font-size)', 
-                fontFamily: 'var(--font-arabic-family)' 
-              }}
+              className="font-arabic-dynamic text-right leading-[2.8] md:leading-[3.2] mb-12 text-slate-800 transition-colors duration-500 group-hover:text-primary relative z-10"
+              style={{ fontSize: 'var(--arabic-font-size)' }}
             >
               {verse.text}
             </p>

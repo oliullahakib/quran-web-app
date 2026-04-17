@@ -31,7 +31,7 @@ export default function SearchResultCard({ result, query }: SearchResultCardProp
           </div>
         </div>
         
-        <div className="font-arabic text-xl text-primary/40 group-hover:text-accent/60 transition-colors">
+        <div className="font-arabic-dynamic text-xl text-primary/40 group-hover:text-accent/60 transition-colors">
           {/* We could potentially show Arabic here if we pass it in SearchResult */}
           ﴾{result.id}﴿
         </div>

@@ -30,7 +30,7 @@ export default function SurahCard({ surah }: SurahCardProps) {
         </div>
         
         <div className="text-right">
-          <span className="font-arabic text-3xl text-primary block group-hover:text-accent transition-colors duration-300">
+          <span className="font-arabic-dynamic text-3xl text-primary block group-hover:text-accent transition-colors duration-300">
             {surah.name}
           </span>
           <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1 block">
