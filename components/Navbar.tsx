@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { useQuran } from '@/store/QuranContext'
 import { useSettings } from '@/store/SettingsContext'
 import dynamic from 'next/dynamic'
 
@@ -23,8 +22,8 @@ export default function Navbar() {
       
       <div className="flex items-center gap-4">
         <div className="hidden md:flex items-center gap-8 mr-4">
-          <Link href="/" className="text-xs font-bold text-slate-400 hover:text-primary transition-colors tracking-widest uppercase">Home Index</Link>
-          <Link href="/surah/1" className="text-xs font-bold text-slate-400 hover:text-primary transition-colors tracking-widest uppercase">Start Reading</Link>
+          <Link href="/" className="text-xs font-bold text-slate-600 hover:text-orange-800 transition-colors tracking-widest uppercase">Home Index</Link>
+          <Link href="/surah/1" className="text-xs font-bold text-slate-600 hover:text-orange-800 transition-colors tracking-widest uppercase">Start Reading</Link>
         </div>
         
         <button 

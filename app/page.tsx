@@ -3,12 +3,12 @@
 import { useQuran } from '@/store/QuranContext'
 import SurahCard from '@/components/SurahCard'
 import SearchResultCard from '@/components/SearchResultCard'
-import Link from 'next/link'
 import { SurahCardSkeleton } from '@/components/ui/Skeleton'
 
 export default function Home() {
   const { 
-    surahs, 
+    surahs,
+    matchedSurahs,
     searchResults, 
     searchQuery, 
     setSearchQuery, 
@@ -16,8 +16,8 @@ export default function Home() {
     isLoading 
   } = useQuran()
 
-  const isSearching = searchQuery.length >= 3
-  const isResultsEmpty = isSearching && debouncedQuery.length >= 3 && searchResults.length === 0
+  const isSearching = searchQuery.length >= 2
+  const isResultsEmpty = isSearching && debouncedQuery.length >= 2 && searchResults.length === 0 && matchedSurahs.length === 0
 
   return (
     <div className="flex-1 flex flex-col items-center bg-[#FCFBF8]">
@@ -41,10 +41,10 @@ export default function Home() {
               </div>
               <input 
                 type="text" 
-                placeholder="Search ayahs by meaning... (e.g. 'Peace', 'Mercy')"
+                placeholder="Search by surah name or ayah meaning... (e.g. 'Fatiha', 'Mercy')"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-16 px-6 bg-transparent text-primary font-medium focus:outline-none placeholder:text-slate-300"
+                className="w-full h-16 px-6 bg-transparent text-primary font-medium focus:outline-none placeholder:text-slate-600"
               />
               {searchQuery && (
                 <button 
@@ -88,7 +88,7 @@ export default function Home() {
                   Search Results
                 </h2>
                 <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px] mt-2">
-                  {searchResults.length} matches found for &quot;{debouncedQuery}&quot;
+                  {matchedSurahs.length + searchResults.length} matches found for &quot;{debouncedQuery}&quot;
                 </p>
               </div>
               <button 
@@ -107,13 +107,13 @@ export default function Home() {
                      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
                   </div>
                 </div>
-                <h3 className="text-2xl font-black text-primary mb-3">Verse not found</h3>
+                <h3 className="text-2xl font-black text-primary mb-3">No results found</h3>
                 <p className="text-slate-500 max-w-sm mb-10 leading-relaxed font-medium">
-                  We couldn&apos;t find any matches for <span className="text-accent">&quot;{debouncedQuery}&quot;</span>. 
-                  Try searching for keywords like &apos;Peace&apos;, &apos;Mercy&apos;, or &apos;Paradise&apos;.
+                  We couldn&apos;t find any surahs or verses matching <span className="text-accent">&quot;{debouncedQuery}&quot;</span>. 
+                  Try searching for keywords like &apos;Fatiha&apos;, &apos;Mercy&apos;, or &apos;Paradise&apos;.
                 </p>
                 <div className="flex flex-wrap justify-center gap-3">
-                  {['Jannah', 'Dua', 'Forgiveness'].map(term => (
+                  {['Fatiha', 'Jannah', 'Dua'].map(term => (
                     <button 
                       key={term}
                       onClick={() => setSearchQuery(term)}
@@ -125,10 +125,34 @@ export default function Home() {
                 </div>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                {searchResults.map((result, idx) => (
-                  <SearchResultCard key={`${result.surahId}-${result.id}-${idx}`} result={result} query={debouncedQuery} />
-                ))}
+              <div className="space-y-16">
+                {matchedSurahs.length > 0 && (
+                  <div>
+                    <h3 className="text-xs font-bold text-accent uppercase tracking-[0.2em] mb-8 flex items-center gap-3">
+                      <span>Matching Chapters</span>
+                      <span className="flex-1 h-px bg-accent/10"></span>
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                      {matchedSurahs.map((surah) => (
+                        <SurahCard key={surah.id} surah={surah} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {searchResults.length > 0 && (
+                  <div>
+                    <h3 className="text-xs font-bold text-accent uppercase tracking-[0.2em] mb-8 flex items-center gap-3">
+                      <span>Matching Verses</span>
+                      <span className="flex-1 h-px bg-accent/10"></span>
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                      {searchResults.map((result, idx) => (
+                        <SearchResultCard key={`${result.surahId}-${result.id}-${idx}`} result={result} query={debouncedQuery} />
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -166,10 +190,10 @@ export default function Home() {
         <div className="w-12 h-12 bg-emerald-950 text-accent rounded-xl flex items-center justify-center font-arabic text-2xl mb-8">
           ق
         </div>
-        <p className="text-slate-400 text-xs font-bold uppercase tracking-[0.2em] mb-2">
+        <p className="text-slate-800 text-xs font-bold uppercase tracking-[0.2em] mb-2">
           Al-Quran Web Application
         </p>
-        <p className="text-slate-300 text-[10px] font-medium tracking-widest">
+        <p className="text-orange-800 text-[10px] font-medium tracking-widest">
           &copy; {new Date().getFullYear()} • BUILT FOR SPIRITUAL CLARITY
         </p>
       </footer>

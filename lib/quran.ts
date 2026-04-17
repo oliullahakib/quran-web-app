@@ -65,3 +65,22 @@ export const searchAyahs = (query: string): SearchResult[] => {
 
   return results
 }
+
+/**
+ * Searches across all surah names (transliteration, Arabic name, and translation)
+ * @param query - The search string
+ * @returns Array of matching surahs
+ */
+export const searchSurahs = (query: string): Omit<Surah, 'verses'>[] => {
+  if (!query || query.length < 2) return []
+
+  const lowerQuery = query.toLowerCase()
+
+  return quran
+    .filter((s) => 
+      s.transliteration.toLowerCase().includes(lowerQuery) ||
+      s.name.toLowerCase().includes(lowerQuery) ||
+      s.translation.toLowerCase().includes(lowerQuery)
+    )
+    .map(({ verses, ...surah }) => surah)
+}

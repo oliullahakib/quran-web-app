@@ -1,7 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react'
-import { getAllSurahs, searchAyahs, Surah, SearchResult } from '@/lib/quran'
+import { getAllSurahs, searchAyahs, searchSurahs, Surah, SearchResult } from '@/lib/quran'
 import useDebounce from '@/hooks/useDebounce'
 
 export interface Bookmark {
@@ -13,6 +13,7 @@ export interface Bookmark {
 
 interface QuranContextType {
   surahs: Omit<Surah, 'verses'>[]
+  matchedSurahs: Omit<Surah, 'verses'>[]
   searchResults: SearchResult[]
   searchQuery: string
   setSearchQuery: (query: string) => void
@@ -72,8 +73,13 @@ export function QuranProvider({ children }: { children: React.ReactNode }) {
     return searchAyahs(debouncedQuery)
   }, [debouncedQuery])
 
+  const matchedSurahs = useMemo(() => {
+    return searchSurahs(debouncedQuery)
+  }, [debouncedQuery])
+
   const value = useMemo(() => ({
     surahs,
+    matchedSurahs,
     searchResults,
     searchQuery,
     setSearchQuery,
@@ -82,7 +88,7 @@ export function QuranProvider({ children }: { children: React.ReactNode }) {
     bookmarks,
     toggleBookmark,
     isBookmarked,
-  }), [surahs, searchResults, searchQuery, debouncedQuery, isLoading, bookmarks])
+  }), [surahs, matchedSurahs, searchResults, searchQuery, debouncedQuery, isLoading, bookmarks])
 
   return (
     <QuranContext.Provider value={value}>
