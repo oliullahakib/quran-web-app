@@ -1,3 +1,4 @@
+import React, { memo } from 'react'
 import Link from 'next/link'
 import { Surah } from '@/lib/quran'
 
@@ -5,7 +6,7 @@ type SurahCardProps = {
   surah: Omit<Surah, 'verses'>
 }
 
-export default function SurahCard({ surah }: SurahCardProps) {
+function SurahCard({ surah }: SurahCardProps) {
   return (
     <Link 
       href={`/surah/${surah.id}`}
@@ -47,3 +48,5 @@ export default function SurahCard({ surah }: SurahCardProps) {
     </Link>
   )
 }
+
+export default memo(SurahCard)

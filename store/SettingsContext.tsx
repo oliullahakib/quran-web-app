@@ -78,7 +78,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     setArabicFontFamily(DEFAULT_SETTINGS.arabicFontFamily)
   }
 
-  const value = {
+  const value = React.useMemo(() => ({
     arabicFontSize,
     setArabicFontSize,
     translationFontSize,
@@ -88,7 +88,12 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     isSettingsOpen,
     setIsSettingsOpen,
     resetSettings,
-  }
+  }), [
+    arabicFontSize, 
+    translationFontSize, 
+    arabicFontFamily, 
+    isSettingsOpen
+  ])
 
   return (
     <SettingsContext.Provider value={value}>

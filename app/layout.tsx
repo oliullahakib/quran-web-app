@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter, Amiri, Scheherazade_New } from 'next/font/google'
 import './globals.css'
 
@@ -19,10 +19,17 @@ const scheherazade = Scheherazade_New({
   weight: ['400', '700'],
 })
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
+
 export const metadata: Metadata = {
   title: 'Al-Quran | Premium Quran Reading Experience',
-  description:
-    'A modern, minimal, and premium Quran reading experience built with Next.js.',
+  description: 'A modern, minimal, and premium Quran reading experience built with Next.js. Features full search, customizable Arabic fonts, and a responsive design.',
+  keywords: ['Quran', 'Al-Quran', 'Islam', 'Noble Quran', 'Quran Search', 'Arabic Fonts'],
+  authors: [{ name: 'Antigravity' }],
+  robots: 'index, follow',
 }
 
 import Navbar from '@/components/Navbar'

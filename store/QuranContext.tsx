@@ -72,7 +72,7 @@ export function QuranProvider({ children }: { children: React.ReactNode }) {
     return searchAyahs(debouncedQuery)
   }, [debouncedQuery])
 
-  const value = {
+  const value = useMemo(() => ({
     surahs,
     searchResults,
     searchQuery,
@@ -82,7 +82,7 @@ export function QuranProvider({ children }: { children: React.ReactNode }) {
     bookmarks,
     toggleBookmark,
     isBookmarked,
-  }
+  }), [surahs, searchResults, searchQuery, debouncedQuery, isLoading, bookmarks])
 
   return (
     <QuranContext.Provider value={value}>

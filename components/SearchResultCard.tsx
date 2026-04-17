@@ -1,3 +1,4 @@
+import React, { memo } from 'react'
 import Link from 'next/link'
 import { SearchResult } from '@/lib/quran'
 import TextHighlighter from './TextHighlighter'
@@ -10,7 +11,7 @@ interface SearchResultCardProps {
 /**
  * Displays an individual search result with context and highlighted text.
  */
-export default function SearchResultCard({ result, query }: SearchResultCardProps) {
+function SearchResultCard({ result, query }: SearchResultCardProps) {
   return (
     <Link 
       href={`/surah/${result.surahId}#verse-${result.id}`}
@@ -54,3 +55,5 @@ export default function SearchResultCard({ result, query }: SearchResultCardProp
     </Link>
   )
 }
+
+export default memo(SearchResultCard)

@@ -3,7 +3,11 @@
 import Link from 'next/link'
 import { useQuran } from '@/store/QuranContext'
 import { useSettings } from '@/store/SettingsContext'
-import SettingsSidebar from './SettingsSidebar'
+import dynamic from 'next/dynamic'
+
+const SettingsSidebar = dynamic(() => import('./SettingsSidebar'), {
+  ssr: false, // Sidebar only exists on client interaction
+})
 
 export default function Navbar() {
   const { setIsSettingsOpen } = useSettings()
