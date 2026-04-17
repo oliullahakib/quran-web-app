@@ -4,6 +4,7 @@ import { useQuran } from '@/store/QuranContext'
 import SurahCard from '@/components/SurahCard'
 import SearchResultCard from '@/components/SearchResultCard'
 import Link from 'next/link'
+import { SurahCardSkeleton } from '@/components/ui/Skeleton'
 
 export default function Home() {
   const { 
@@ -72,7 +73,13 @@ export default function Home() {
 
       {/* Main Content Section */}
       <section className="w-full max-w-7xl py-16 md:py-24 px-6 min-h-[600px]">
-        {isSearching ? (
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {Array.from({ length: 9 }).map((_, i) => (
+              <SurahCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : isSearching ? (
           /* Search Results View */
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="flex items-end justify-between mb-12 px-2">
@@ -93,12 +100,29 @@ export default function Home() {
             </div>
 
             {isResultsEmpty ? (
-              <div className="flex flex-col items-center justify-center py-20 text-center">
-                <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center text-accent mb-6">
-                   <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              <div className="flex flex-col items-center justify-center py-20 text-center animate-in fade-in zoom-in-95 duration-500">
+                <div className="relative mb-10">
+                  <div className="absolute inset-0 bg-accent/20 blur-3xl rounded-full scale-150"></div>
+                  <div className="relative w-32 h-32 bg-white rounded-3xl shadow-2xl flex items-center justify-center text-accent rotate-3 transition-transform hover:rotate-6">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold text-primary mb-2">No ayahs found</h3>
-                <p className="text-slate-500 max-w-xs">We couldn&apos;t find any verses matching your search term. Try another keyword like &apos;Peace&apos; or &apos;Light&apos;.</p>
+                <h3 className="text-2xl font-black text-primary mb-3">Verse not found</h3>
+                <p className="text-slate-500 max-w-sm mb-10 leading-relaxed font-medium">
+                  We couldn&apos;t find any matches for <span className="text-accent">&quot;{debouncedQuery}&quot;</span>. 
+                  Try searching for keywords like &apos;Peace&apos;, &apos;Mercy&apos;, or &apos;Paradise&apos;.
+                </p>
+                <div className="flex flex-wrap justify-center gap-3">
+                  {['Jannah', 'Dua', 'Forgiveness'].map(term => (
+                    <button 
+                      key={term}
+                      onClick={() => setSearchQuery(term)}
+                      className="px-6 py-3 bg-emerald-50 text-primary rounded-2xl text-xs font-bold uppercase tracking-widest hover:bg-accent hover:text-white transition-all transform hover:-translate-y-1"
+                    >
+                      {term}
+                    </button>
+                  ))}
+                </div>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">

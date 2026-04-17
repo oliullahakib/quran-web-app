@@ -33,6 +33,7 @@ export const metadata: Metadata = {
 }
 
 import Navbar from '@/components/Navbar'
+import BackToTop from '@/components/BackToTop'
 import { QuranProvider } from '@/store/QuranContext'
 import { SettingsProvider } from '@/store/SettingsContext'
 
@@ -48,6 +49,7 @@ export default function RootLayout({
           <QuranProvider>
             <Navbar />
             <main className="min-h-[calc(100vh-5rem)] flex flex-col">{children}</main>
+            <BackToTop />
           </QuranProvider>
         </SettingsProvider>
       </body>
