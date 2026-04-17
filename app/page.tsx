@@ -11,7 +11,7 @@ export default function Home() {
       <section className="w-full relative py-24 md:py-32 px-6 flex flex-col items-center text-center overflow-hidden bg-emerald-950">
         {/* Dynamic Background elements */}
         <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')] scale-110 pointer-events-none"></div>
-        <div className="absolute top-0 w-full h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent"></div>
+        <div className="absolute top-0 w-full h-px bg-linear-to-r from-transparent via-accent/30 to-transparent"></div>
         <div className="absolute -top-24 w-96 h-96 bg-accent/20 blur-[100px] rounded-full pointer-events-none"></div>
         
         <div className="relative z-10 max-w-4xl">
