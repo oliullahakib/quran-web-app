@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Loading() {
   return (
-    <div className="fixed inset-0 z-100 flex flex-col items-center justify-center bg-[#FDFCF0]">
+    <div className="fixed inset-0 z-100 flex flex-col items-center justify-center bg-secondary">
       {/* Decorative Background Pattern */}
       <div className="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')] scale-110 pointer-events-none"></div>
       

@@ -16,7 +16,7 @@ export default function Error({
   }, [error])
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#FDFCF0] px-6 text-center">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-secondary px-6 text-center">
       {/* Decorative Background Pattern */}
       <div className="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')] scale-110 pointer-events-none -z-10"></div>
       
