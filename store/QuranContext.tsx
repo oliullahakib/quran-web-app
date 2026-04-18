@@ -30,9 +30,10 @@ const QuranContext = createContext<QuranContextType | undefined>(undefined)
 
 export function QuranProvider({ children }: { children: React.ReactNode }) {
   const [surahs, setSurahs] = useState<Omit<Surah, 'verses'>[]>([])
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([])
+  const [matchedSurahs, setMatchedSurahs] = useState<Omit<Surah, 'verses'>[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [isLoading, setIsLoading] = useState(true)
-
 
   // Bookmarks State
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([])
@@ -41,15 +42,48 @@ export function QuranProvider({ children }: { children: React.ReactNode }) {
 
   // Initialize and Load Persistence
   useEffect(() => {
-    const data = getAllSurahs()
-    setSurahs(data)
-    setIsLoading(false)
+    const initData = async () => {
+      setIsLoading(true)
+      try {
+        const data = await getAllSurahs()
+        setSurahs(data)
+      } catch (err) {
+        console.error('Failed to load surahs:', err)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    initData()
 
     // Load from localStorage
     const savedBookmarks = localStorage.getItem('bookmarks')
     if (savedBookmarks) setBookmarks(JSON.parse(savedBookmarks))
   }, [])
 
+  // Handle Search Asynchronously
+  useEffect(() => {
+    const performSearch = async () => {
+      if (debouncedQuery.length < 2) {
+        setSearchResults([])
+        setMatchedSurahs([])
+        return
+      }
+
+      try {
+        const [ayahResults, surahResults] = await Promise.all([
+          searchAyahs(debouncedQuery),
+          searchSurahs(debouncedQuery)
+        ])
+        setSearchResults(ayahResults)
+        setMatchedSurahs(surahResults)
+      } catch (err) {
+        console.error('Search failed:', err)
+      }
+    }
+
+    performSearch()
+  }, [debouncedQuery])
 
   useEffect(() => {
     localStorage.setItem('bookmarks', JSON.stringify(bookmarks))
@@ -68,14 +102,6 @@ export function QuranProvider({ children }: { children: React.ReactNode }) {
   const isBookmarked = (surahId: number, verseId: number) => {
     return !!bookmarks.find((b) => b.id === verseId && b.surahId === surahId)
   }
-
-  const searchResults = useMemo(() => {
-    return searchAyahs(debouncedQuery)
-  }, [debouncedQuery])
-
-  const matchedSurahs = useMemo(() => {
-    return searchSurahs(debouncedQuery)
-  }, [debouncedQuery])
 
   const value = useMemo(() => ({
     surahs,

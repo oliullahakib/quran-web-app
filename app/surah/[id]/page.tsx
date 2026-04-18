@@ -20,7 +20,8 @@ export default async function SurahPage({ params }: PageProps) {
   
   if (isNaN(surahId)) notFound()
   
-  const surah = getSurahById(surahId)
+  const surah = await getSurahById(surahId)
+
   
   if (!surah) notFound()
 

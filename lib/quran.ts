@@ -1,4 +1,3 @@
-import quranData from '../data/quran.json'
 
 export interface Verse {
   id: number
@@ -16,40 +15,67 @@ export interface Surah {
   verses?: Verse[]
 }
 
-// Type for the full dataset (array of surahs)
-const quran: Surah[] = quranData as Surah[]
-
-/**
- * Returns a list of all surahs with metadata (without verses to keep it lightweight)
- */
-export const getAllSurahs = (): Omit<Surah, 'verses'>[] => {
-  return quran.map(({ verses, ...surah }) => surah)
-}
-
-/**
- * Returns a single surah by its ID
- */
-export const getSurahById = (id: number): Surah | undefined => {
-  return quran.find((s) => s.id === id)
-}
-
-/**
- * Searches across all ayahs' English translations
- * @param query - The search string
- * @returns Array of matching ayahs with their surah context
- */
 export interface SearchResult extends Verse {
   surahId: number
   surahName: string
 }
 
-export const searchAyahs = (query: string): SearchResult[] => {
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5500'
+
+/**
+ * Global cache for surahs to avoid redundant fetches in the same session
+ */
+let cachedSurahs: Surah[] | null = null
+
+/**
+ * Fetches all surahs from the API
+ */
+export const fetchAllData = async (): Promise<Surah[]> => {
+  if (cachedSurahs) return cachedSurahs
+
+  try {
+    const res = await fetch(`${API_URL}/surahs`, {
+      next: { revalidate: 3600 } // Cache for 1 hour in Next.js
+    })
+    
+    if (!res.ok) throw new Error('Failed to fetch Quran data')
+    
+    const data = await res.json()
+    cachedSurahs = data
+    return data
+  } catch (error) {
+    console.error('Error fetching Quran data:', error)
+    return []
+  }
+}
+
+/**
+ * Returns a list of all surahs with metadata (without verses to keep it lightweight if possible)
+ */
+export const getAllSurahs = async (): Promise<Omit<Surah, 'verses'>[]> => {
+  const surahs = await fetchAllData()
+  return surahs.map(({ verses, ...surah }) => surah)
+}
+
+/**
+ * Returns a single surah by its ID
+ */
+export const getSurahById = async (id: number): Promise<Surah | undefined> => {
+  const surahs = await fetchAllData()
+  return surahs.find((s) => s.id === id)
+}
+
+/**
+ * Searches across all ayahs' English translations
+ */
+export const searchAyahs = async (query: string): Promise<SearchResult[]> => {
   if (!query || query.length < 3) return []
 
+  const surahs = await fetchAllData()
   const results: SearchResult[] = []
   const lowerQuery = query.toLowerCase()
 
-  for (const surah of quran) {
+  for (const surah of surahs) {
     if (surah.verses) {
       for (const verse of surah.verses) {
         if (verse.translation.toLowerCase().includes(lowerQuery)) {
@@ -67,16 +93,15 @@ export const searchAyahs = (query: string): SearchResult[] => {
 }
 
 /**
- * Searches across all surah names (transliteration, Arabic name, and translation)
- * @param query - The search string
- * @returns Array of matching surahs
+ * Searches across all surah names
  */
-export const searchSurahs = (query: string): Omit<Surah, 'verses'>[] => {
+export const searchSurahs = async (query: string): Promise<Omit<Surah, 'verses'>[]> => {
   if (!query || query.length < 2) return []
 
+  const surahs = await fetchAllData()
   const lowerQuery = query.toLowerCase()
 
-  return quran
+  return surahs
     .filter((s) => 
       s.transliteration.toLowerCase().includes(lowerQuery) ||
       s.name.toLowerCase().includes(lowerQuery) ||
