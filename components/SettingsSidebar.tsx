@@ -20,7 +20,7 @@ export default function SettingsSidebar() {
     <div className="fixed min-h-screen inset-0 z-100 flex justify-end overflow-hidden">
       {/* Overlay */}
       <div 
-        className="absolute inset-0 bg-emerald-950/20 backdrop-blur-sm transition-opacity animate-sidebar-fade"
+        className="hidden md:block absolute inset-0 bg-emerald-950/20 backdrop-blur-sm transition-opacity animate-sidebar-fade"
         onClick={() => setIsSettingsOpen(false)}
       />
       
