@@ -1,8 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getSurahById } from '@/lib/quran'
-import { useQuran } from '@/store/QuranContext'
-
 interface PageProps {
   params: Promise<{ id: string }>
 }
@@ -78,22 +76,11 @@ export default async function SurahPage({ params }: PageProps) {
             className="group p-10 md:p-14 bg-white border border-emerald-50 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all duration-500 relative overflow-hidden"
           >
             {/* Background verse number indicator */}
-            <div className="absolute -left-4 -top-4 text-emerald-50/40 font-black text-8xl pointer-events-none group-hover:text-emerald-50 transition-colors duration-500">
-              {verse.id}
-            </div>
-
             <div className="flex justify-between items-start mb-10 relative z-10">
               <div className="w-12 h-12 flex items-center justify-center bg-emerald-50 text-accent font-black rounded-2xl text-sm border border-emerald-100 group-hover:bg-accent group-hover:text-white transition-colors duration-300">
                 {verse.id}
               </div>
-              <div className="flex gap-3 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                <button className="h-10 px-4 bg-emerald-50 hover:bg-emerald-100 rounded-xl text-primary text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 transition-colors">
-                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                   Play
-                </button>
-                <button className="h-10 w-10 bg-emerald-50 hover:bg-emerald-100 rounded-xl text-primary flex items-center justify-center transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
-                </button>
+              <div className="flex gap-3 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">   
               </div>
             </div>
             
