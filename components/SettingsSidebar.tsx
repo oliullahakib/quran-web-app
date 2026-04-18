@@ -1,6 +1,4 @@
 'use client'
-
-import React from 'react'
 import { useSettings } from '@/store/SettingsContext'
 
 export default function SettingsSidebar() {
@@ -27,7 +25,7 @@ export default function SettingsSidebar() {
       />
       
       {/* Sidebar Panel */}
-      <div className="relative w-full max-w-sm bg-white shadow-2xl animate-sidebar-slide overflow-y-auto">
+      <div className="relative min-h-full min-w-full sm:min-w-1/3 max-w-sm bg-white shadow-2xl animate-sidebar-slide overflow-y-auto">
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-emerald-50">
@@ -105,7 +103,7 @@ export default function SettingsSidebar() {
           <div className="mt-auto p-6 bg-emerald-50/30 border-t border-emerald-50">
             <button 
               onClick={resetSettings}
-              className="w-full py-4 rounded-2xl bg-white border border-emerald-100 text-sm font-bold text-primary hover:border-accent hover:text-accent transition-all duration-300"
+              className="w-full py-4 rounded-2xl bg-white border border-emerald-100 text-sm font-bold text-primary hover:border-accent hover:text-accent transition-all duration-300 cursor-pointer"
             >
               Reset to Defaults
             </button>
